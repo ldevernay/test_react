@@ -9,7 +9,8 @@ class Game extends Component {
       history: [{
         squares: Array(9).fill(null)
       }],
-      xIsNext: true
+      xIsNext: true,
+      stepNumber: 0
     };
   }
   render() {
@@ -47,8 +48,9 @@ class Game extends Component {
     );
   }
   handleClick(i){
-    const history = this.state.history;
-    const current = history[history.length - 1];
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+
+    const current = history[this.state.stepNumber];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -59,6 +61,15 @@ class Game extends Component {
         squares: squares
       }]),
       xIsNext: !this.state.xIsNext,
+      stepNumber: history.length
+    });
+  }
+  jumpTo(step) {
+    const history = this.state.history.slice(0, step + 1);
+    this.setState({
+      history: history,
+      xIsNext: (step % 2) ? false : true,
+      stepNumber: step
     });
   }
 }
