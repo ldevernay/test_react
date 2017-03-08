@@ -14,7 +14,7 @@ class Board extends Component {
     return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
   }
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     return (
       <div>
       <div className="status">{status}</div>
@@ -38,14 +38,11 @@ class Board extends Component {
   }
   handleClick(i){
     const squares = this.state.squares.slice();
-    const next = this.state.xIsNext;
-    if (this.state.xIsNext){
-      squares[i] = 'X';
-    }else {
-      squares[i] = 'O';
-    }
-    this.setState({squares: squares});
-    this.setState({xIsNext: !next});
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
   }
 }
 
